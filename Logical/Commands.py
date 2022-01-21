@@ -18,7 +18,7 @@ class Common(commands.Cog):
             wann_frage = True
         for el in args:
             searchQ += (el + " ")
-        await ctx.send(self.muschel.generateQuote(wann_frage))
+        await ctx.reply(self.muschel.generateQuote(wann_frage))
 
     @commands.command(name="random", brief="Zufallszahl zwischen [lB] und [uB] !random [lB] [uB]")
     async def getRandom(self, ctx, lB, uB):
