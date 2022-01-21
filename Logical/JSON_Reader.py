@@ -12,7 +12,7 @@ class Reader():
             self.filepath = filename
 
     def getJSON_from_File(self):
-        with open(self.filepath) as f:
+        with open(self.filepath, encoding='utf-8') as f:
             return json.load(f)
 
     def getFileAttribute(self, attr):
