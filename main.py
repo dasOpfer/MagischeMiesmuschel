@@ -11,14 +11,14 @@ app = Flask('')
 
 @app.route('/')
 def responding():
-  return "i'm alive"
+    return "i'm alive"
 
 def run():
-  app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000)
 
 def keep_alive():
-  server = Thread(target=run)
-  server.start()
+    server = Thread(target=run)
+    server.start()
 
 
 reader = JSON_Reader.Reader("../Media/JSON/credentials.json")
@@ -35,5 +35,6 @@ async def about(ctx):
 
 
 if __name__ == '__main__':
-    bot.run(input("Token eingeben: "))
     keep_alive()
+    bot.run(input("Token eingeben: "))
+
