@@ -1,4 +1,5 @@
 import random
+from Logical.Errors import InvalidArgumentsError
 
 class MagischeMuschel():
 
@@ -47,6 +48,3 @@ class MagischeMuschel():
         if ub < lb:
             raise InvalidArgumentsError("[uB] < [lB] ist ungültig")
         return random.randint(lb, ub)
-
-class InvalidArgumentsError(Exception):
-    pass
