@@ -5,8 +5,7 @@ from . import Muschel, Errors
 
 class Common(commands.Cog):
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.muschel = Muschel.MagischeMuschel()
 
     @commands.command(name="ask", brief="Frage die Magische Miesmuschel Ja/Nein/wann Fragen")
@@ -30,3 +29,7 @@ class Common(commands.Cog):
             await ctx.send("uB muss größer gleich (>=) lB sein")
         except ValueError:
             await ctx.send("Parameter müssen int sein!")
+
+    @commands.command()
+    async def about(self, ctx):
+        await ctx.send("help für mehr Informationen")

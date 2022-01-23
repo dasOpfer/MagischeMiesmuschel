@@ -4,16 +4,12 @@ from discord.ext import commands
 
 reader = JSON_Reader.Reader("../media/JSON/credentials.json")
 bot = commands.Bot(command_prefix=reader.getFileAttribute('prefix'))
-bot.add_cog(Commands.Common(bot=bot))
+bot.add_cog(Commands.Common())
+
 
 @bot.event
 async def on_ready():
     print("bot ist bereit")
-
-
-@bot.command()
-async def about(ctx):
-    ctx.send("help für mehr Informationen")
 
 
 def run_bot():
