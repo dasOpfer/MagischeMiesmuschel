@@ -1,0 +1,6 @@
+# Python cache
+muschel/__pycache__/*
+muschel/*/__pycache__/*
+
+# misc
+.vscode/*

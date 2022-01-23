@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands, tasks
-from Logical import Muschel, Errors
+from . import Muschel, Errors
 
 
 class Common(commands.Cog):
