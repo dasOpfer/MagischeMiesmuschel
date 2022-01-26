@@ -1,5 +1,5 @@
 import random
-from .JSON_Reader import Reader
+from .Media_Reader import JSONReader
 from .Errors import InvalidArgumentsError
 
 class MagischeMuschel():
@@ -9,11 +9,11 @@ class MagischeMuschel():
 
     def generateQuote(self, wann_frage):
         res_word = ""
-        reader = Reader("../media/JSON/credentials.json")
+        reader = JSONReader("../media/json/credentials.json")
         vielleicht_liste = reader.getFileAttribute('vielleicht_list')
         words_liste = reader.getFileAttribute('words_list')
         res_word = random.choice(words_liste)
-        if (wann_frage == False):
+        if (not wann_frage):
             words_liste.remove('Vielleicht')
         if res_word.lower() == ("vielleicht" or "vielleicht "):
             res_word += f" {random.choice(vielleicht_liste)}"

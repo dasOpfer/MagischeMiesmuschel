@@ -1,8 +1,8 @@
 import muschel.logical.Commands as Commands
-import muschel.logical.JSON_Reader as JSON_Reader
+from muschel.logical.Media_Reader import *
 from discord.ext import commands
 
-reader = JSON_Reader.Reader("../media/JSON/credentials.json")
+reader = JSONReader("../media/json/credentials.json")
 bot = commands.Bot(command_prefix=reader.getFileAttribute('prefix'))
 bot.add_cog(Commands.Common())
 
