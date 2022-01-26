@@ -20,10 +20,10 @@ class Common(commands.Cog):
             await ctx.reply(self.muschel.generateQuote(wann_frage))
         except commands.InvalidEndOfQuotedStringError:
             # await ctx.send(file=discord.File())  # add File
-            pass
+            await ctx.send("Invalid End of Quotes")
         except (BaseException, Exception) as e:
             print(e)
-            await ctx.send("oopsie woopsie sowwy TwT")
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
 
     @commands.command(name="random", brief="Zufallszahl zwischen [lB] und [uB] !random [lB] [uB]")
     async def getRandom(self, ctx, lB, uB):

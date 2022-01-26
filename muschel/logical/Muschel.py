@@ -1,6 +1,6 @@
 import random
 from .Media_Reader import JSONReader
-from .Errors import InvalidArgumentsError
+from . import Errors
 
 class MagischeMuschel():
 
