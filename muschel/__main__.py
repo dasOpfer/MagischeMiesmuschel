@@ -1,5 +1,5 @@
 import muschel.logical.Commands as Commands
-from muschel.logical.Media_Reader import *
+from muschel.logical.Media_Reader import JSONReader
 from discord.ext import commands
 
 reader = JSONReader("../media/json/credentials.json")
