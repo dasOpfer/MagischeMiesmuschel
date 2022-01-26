@@ -63,5 +63,5 @@ class MagischeMuschel():
 
     def createRandom(self, lb, ub):
         if ub < lb:
-            raise InvalidArgumentsError("[uB] < [lB] ist ungültig")
+            raise Errors.InvalidArgumentsError("[uB] < [lB] ist ungültig")
         return random.randint(lb, ub)
