@@ -10,14 +10,20 @@ class Common(commands.Cog):
 
     @commands.command(name="ask", brief="Frage die Magische Miesmuschel Ja/Nein/wann Fragen")
     async def getFrage(self, ctx, *args):
-        # muschel = Muschel.MagischeMuschel()
-        wann_frage = False
-        searchQ = ""
-        if True in ["wann" in x for x in args]:
-            wann_frage = True
-        for el in args:
-            searchQ += (el + " ")
-        await ctx.reply(self.muschel.generateQuote(wann_frage))
+        try:
+            wann_frage = False
+            searchQ = ""
+            if True in ["wann" in x for x in args]:
+                wann_frage = True
+            for el in args:
+                searchQ += (el + " ")
+            await ctx.reply(self.muschel.generateQuote(wann_frage))
+        except commands.InvalidEndOfQuotedStringError:
+            # await ctx.send(file=discord.File())  # add File
+            pass
+        except (BaseException, Exception) as e:
+            print(e)
+            await ctx.send("oopsie woopsie sowwy TwT")
 
     @commands.command(name="random", brief="Zufallszahl zwischen [lB] und [uB] !random [lB] [uB]")
     async def getRandom(self, ctx, lB, uB):
