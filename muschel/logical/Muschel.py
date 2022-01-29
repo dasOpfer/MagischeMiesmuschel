@@ -2,13 +2,13 @@ import random
 from .Media_Reader import JSONReader
 from . import Errors
 
+
 class MagischeMuschel():
 
     def __init__(self):
         pass
 
     def generateQuote(self, wann_frage):
-        res_word = ""
         reader = JSONReader("../media/json/credentials.json")
         vielleicht_liste = reader.getFileAttribute('vielleicht_list')
         words_liste = reader.getFileAttribute('words_list')
