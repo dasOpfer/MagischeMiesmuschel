@@ -18,24 +18,32 @@ class Common(commands.Cog):
             for el in args:
                 searchQ += (el + " ")
             await ctx.reply(self.muschel.generateQuote(wann_frage))
-        except commands.InvalidEndOfQuotedStringError:
-            # await ctx.send(file=discord.File())  # add File
-            await ctx.send("Invalid End of Quotes")
-        except (BaseException, Exception) as e:
-            print(e)
+        except (Exception, BaseException) as e:
             await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
 
     @commands.command(name="random", brief="Zufallszahl zwischen [lB] und [uB] !random [lB] [uB]")
     async def getRandom(self, ctx, lB, uB):
-        try:
-            await ctx.send(self.muschel.createRandom(int(lB), int(uB)))
-        except discord.ext.commands.errors.MissingRequiredArgument:
-            await ctx.send("Ungültige/Fehlende Argumente. 2 sind gegeben.")
-        except Errors.InvalidArgumentsError:
-            await ctx.send("uB muss größer gleich (>=) lB sein")
-        except ValueError:
-            await ctx.send("Parameter müssen int sein!")
+        await ctx.send(self.muschel.createRandom(int(lB), int(uB)))
 
     @commands.command()
     async def about(self, ctx):
-        await ctx.send("help für mehr Informationen")
+        try:
+            await ctx.send("help für mehr Informationen")
+        except ValueError:
+            await ctx.send("Parameter müssen int sein")
+        except (Exception, BaseException) as e:
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+
+    @getFrage.error
+    async def invalidArgs_getFragen_raise(self, ctx, error):
+        await ctx.send("https://img-9gag-fun.9cache.com/photo/aDDjdzd_460s.jpg")
+        if isinstance(error, (commands.InvalidEndOfQuotedStringError or commands.MissingRequiredArgument)):
+            await ctx.send("ich kann die Nachricht nicht lesen")
+
+    @getRandom.error
+    async def invalidArgs_getRandom_raise(self, ctx, error):
+        print(type(error))
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("Ungültige/Fehlende Argumente. 2 sind gegeben.")
+        elif isinstance(error, commands.CommandInvokeError):
+            await ctx.send("uB muss größer gleich (>=) lB sein")
