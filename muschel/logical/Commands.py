@@ -42,7 +42,6 @@ class Common(commands.Cog):
     @getFrage.error
     async def invalidArgs_getFragen_raise(self, ctx, error):
         await ctx.send("https://img-9gag-fun.9cache.com/photo/aDDjdzd_460s.jpg")
-        print(type(error))
         if isinstance(error, (commands.InvalidEndOfQuotedStringError, commands.MissingRequiredArgument)):
             await ctx.send("ich kann die Nachricht nicht lesen")
         elif isinstance(error, commands.UnexpectedQuoteError):
