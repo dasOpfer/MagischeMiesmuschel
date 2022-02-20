@@ -1,4 +1,6 @@
 import random
+from datetime import datetime
+
 from .Media_Reader import JSONReader
 from . import Errors
 
@@ -6,7 +8,7 @@ from . import Errors
 class MagischeMuschel():
 
     def __init__(self):
-        pass
+        self.initTime = datetime.now()
 
     def generateQuote(self, wann_frage):
         reader = JSONReader("../media/json/credentials.json")
@@ -65,3 +67,11 @@ class MagischeMuschel():
         if ub < lb:
             raise Errors.InvalidArgumentsError("[uB] < [lB] ist ungültig")
         return random.randint(lb, ub)
+
+    def calcTimeDelta(self, o_datetime):
+        return o_datetime - self.initTime
+
+    def decideCell(self, args):
+        if len(args) < 1:
+            raise Errors.InvalidArgumentsError("Mindestens Ein Parameter muss gegeben sein")
+        return random.choice(args)
