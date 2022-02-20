@@ -1,3 +1,6 @@
+import random
+from datetime import datetime
+
 import discord
 from discord.ext import commands
 from . import Muschel, Errors
@@ -32,12 +35,33 @@ class Common(commands.Cog):
         except (Exception, BaseException) as e:
             await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
 
+    @commands.command(name="decide", brief="Zufaellige Auswahl eines Parameters", description="Anwendungsbeispiel:\n!decide a b")
+    async def decide(self, ctx, *args):
+        try:
+            await ctx.send(self.muschel.decideCell(args))
+        except (Exception, BaseException) as e:
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+
+    @commands.command(name="uptime", brief="Gibt die Betriebszeit des Bots an")
+    async def getUptime(self, ctx):
+        try:
+            await ctx.send(self.muschel.calcTimeDelta(datetime.now()))
+        except Errors.InvalidArgumentsError:
+            await ctx.send("Mindestens Ein Parameter muss gegeben sein")
+        except (Exception, BaseException) as e:
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+
     @commands.command()
     async def about(self, ctx):
         try:
             await ctx.send("help für mehr Informationen")
         except (Exception, BaseException) as e:
             await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+
+    @decide.error
+    async def invalidArgs_decide_raise(self, ctx, error):
+        if isinstance(error, commands.UnexpectedQuoteError):
+            await ctx.send('https://media.discordapp.net/attachments/751138577567449220/936035020613763082/image0-1.gif')
 
     @getFrage.error
     async def invalidArgs_getFragen_raise(self, ctx, error):
