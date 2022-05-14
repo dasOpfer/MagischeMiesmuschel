@@ -1,5 +1,6 @@
 import random
 from datetime import datetime
+from tkinter.messagebox import NO
 
 from .Media_Reader import JSONReader
 from . import Errors
@@ -75,3 +76,12 @@ class MagischeMuschel():
         if len(args) < 1:
             raise Errors.InvalidArgumentsError("Mindestens Ein Parameter muss gegeben sein")
         return random.choice(args)
+
+    def callExams(self):
+        now = datetime.now()
+        year, month = now.year, 7
+        if now.month > 7:
+            year, month = now.year + 1, 2
+        then = datetime(year, month, 1, 0, 0, 0)
+        return (then - now).total_seconds()
+        
