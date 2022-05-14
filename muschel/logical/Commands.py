@@ -3,7 +3,6 @@ from datetime import datetime
 
 import discord
 from discord.ext import commands
-from regex import B
 from . import Muschel, Errors
 
 
@@ -58,7 +57,7 @@ class Common(commands.Cog):
             d_hours = (int) (self.muschel.callExams() // 3600)
             d_days = (int) (self.muschel.callExams() // 86400)
             msg = f"Bis zur nächsten Klausurphase sind es noch {d_days} Tage | {d_hours} Stunden"
-            await ctx.send(msg)
+            await ctx.reply(msg)
         except (Exception, BaseException) as e:
             await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
 
