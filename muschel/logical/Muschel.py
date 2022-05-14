@@ -1,6 +1,5 @@
 import random
 from datetime import datetime
-from tkinter.messagebox import NO
 
 from .Media_Reader import JSONReader
 from . import Errors
