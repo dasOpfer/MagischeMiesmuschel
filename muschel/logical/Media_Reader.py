@@ -14,9 +14,6 @@ class MediaReader():
             raise IsADirectoryError("Target is a directory: " + filename)
         self.filepath = filename
 
-    def __repr__(self):
-        print(f"My filepath: {self.filepath}")
-
 
 class JSONReader(MediaReader):
 
