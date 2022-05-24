@@ -8,10 +8,11 @@ class MediaReader():
     def __init__(self, filepath):
         dirname = os.path.dirname(__file__)
         filename = os.path.join(dirname, filepath)
-        if not os.path.isfile(filename):
-            raise FileNotFoundError("Datei Existiert nicht an: " + filename)
-        else:
-            self.filepath = filename
+        if not os.path.exists(filename):
+            raise FileNotFoundError(f"{filename}: No such file or directory")
+        if os.path.isdir(filename):
+            raise IsADirectoryError("Target is a directory: " + filename)
+        self.filepath = filename
 
     def __repr__(self):
         print(f"My filepath: {self.filepath}")
