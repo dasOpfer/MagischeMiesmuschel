@@ -2,8 +2,9 @@ from muschel import cfgs, log, __bot_logger__
 import muschel.logical.Commands as Commands
 from muschel.logical.Media_Reader import JSONReader
 from discord.ext import commands
+import os
 
-reader = JSONReader("../media/json/credentials.json")
+reader = JSONReader(os.path.join("..", "media", "json", "credentials.json"))
 bot = commands.Bot(command_prefix=reader.getFileAttribute('prefix'))
 bot.add_cog(Commands.Common())
 
