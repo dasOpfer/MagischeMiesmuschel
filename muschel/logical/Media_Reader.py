@@ -1,6 +1,9 @@
+from logging import getLogger
 import json
 import os
 from . import Errors
+
+log = getLogger(__name__)
 
 
 class MediaReader():
@@ -23,8 +26,15 @@ class JSONReader(MediaReader):
     def getJSONFromFile(self):
         if not self.filepath.lower().endswith("json"):
             raise Errors.InvalidFileEnding("Target is not a JSON file")
-        with open(self.filepath, encoding='utf-8') as f:
-            return json.load(f)
+        json_file = {}
+        try:
+            with open(self.filepath, encoding="utf-8") as file:
+                json_file = json.load(file)
+            file.close()
+        except Exception as e:
+            log.error(f"Failed to read JSON file '{self.filepath}': {e}",
+                      exc_info=True)
+        return json_file
 
     def getFileAttribute(self, attr):
         data = self.getJSONFromFile()
