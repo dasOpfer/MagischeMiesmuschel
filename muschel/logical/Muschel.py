@@ -1,4 +1,5 @@
 import random
+import os
 from datetime import datetime
 
 from .Media_Reader import JSONReader
@@ -9,11 +10,12 @@ class MagischeMuschel():
 
     def __init__(self):
         self.initTime = datetime.now()
+        self.reader = JSONReader(
+            os.path.join("..", "media", "json", "credentials.json"))
 
     def generateQuote(self, wann_frage):
-        reader = JSONReader("../media/json/credentials.json")
-        vielleicht_liste = reader.getFileAttribute('vielleicht_list')
-        words_liste = reader.getFileAttribute('words_list')
+        vielleicht_liste = self.reader.getFileAttribute('vielleicht_list')
+        words_liste = self.reader.getFileAttribute('words_list')
         res_word = random.choice(words_liste)
         if (not wann_frage):
             words_liste.remove('Vielleicht')
