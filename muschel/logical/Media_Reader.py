@@ -22,6 +22,7 @@ class JSONReader(MediaReader):
 
     def __init__(self, filepath):
         super(JSONReader, self).__init__(filepath)
+        self.__json_data = self.getJSONFromFile()
 
     def getJSONFromFile(self):
         if not self.filepath.lower().endswith("json"):
@@ -37,11 +38,10 @@ class JSONReader(MediaReader):
         return json_file
 
     def getFileAttribute(self, attr):
-        data = self.getJSONFromFile()
         try:
-            if (data[attr] == 0 or data[attr]) == '':
+            if (self.__json_data[attr] == 0 or self.__json_data[attr]) == '':
                 raise ValueError(f"{attr} besitzt den Wert 0 oder ''")
-            return data[attr]
+            return self.__json_data[attr]
         except KeyError:
             raise Exception(f"{attr} Attribut in Datei nicht gefunden")
 
