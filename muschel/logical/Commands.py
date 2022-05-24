@@ -1,7 +1,4 @@
-import random
 from datetime import datetime
-
-import discord
 from discord.ext import commands
 from . import Muschel, Errors
 
