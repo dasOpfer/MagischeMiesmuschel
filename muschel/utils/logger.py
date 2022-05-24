@@ -27,7 +27,7 @@ def setColor(text: str, color: Colors) -> str:
 class LogColorFormatter(logging.Formatter):
     def format(self, logtype):
         LOG_FORMAT = "%(asctime)s - %(levelname)-8s - %(name)s: %(message)s"
-        LOG_COLORS = {"DEBUG": LOG_FORMAT,
+        LOG_COLORS = {#"DEBUG": LOG_FORMAT,
                       "INFO": LOG_FORMAT,
                       "WARNING": setColor(LOG_FORMAT, Colors.YELLOW),
                       "ERROR": setColor(LOG_FORMAT, Colors.RED),
@@ -45,7 +45,7 @@ class _Logger:
     def _setup_logger(self):
         self.__shandler = logging.StreamHandler()
         self.__shandler.setFormatter(LogColorFormatter())
-        logging.basicConfig(handlers=[self.__shandler], level=logging.DEBUG)
+        logging.basicConfig(handlers=[self.__shandler], level=logging.INFO)
         return
 
     def _stop_logging(self):
