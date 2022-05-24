@@ -22,7 +22,7 @@ class JSONReader(MediaReader):
 
     def getJSONFromFile(self):
         if not self.filepath.lower().endswith("json"):
-            Errors.InvalidFileEnding("Datei endet nicht mit json")
+            raise Errors.InvalidFileEnding("Datei endet nicht mit json")
         with open(self.filepath, encoding='utf-8') as f:
             return json.load(f)
 
