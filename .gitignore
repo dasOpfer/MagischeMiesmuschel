@@ -1,3 +1,6 @@
+# Ignore cfgs
+muschel/config.env
+
 # Python cache
 muschel/__pycache__/*
 muschel/*/__pycache__/*
