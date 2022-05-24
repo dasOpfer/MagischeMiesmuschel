@@ -1,4 +1,4 @@
-from muschel import log, __bot_logger__
+from muschel import cfgs, log, __bot_logger__
 import muschel.logical.Commands as Commands
 from muschel.logical.Media_Reader import JSONReader
 from discord.ext import commands
@@ -14,8 +14,11 @@ async def on_ready():
 
 
 def run_bot():
+    token = cfgs.getConfig("TOKEN")
+    if not token:
+        raise ValueError("Discord bot token empty")
     try:
-        bot.loop.run_until_complete(bot.start(input("Token wo?: ")))
+        bot.loop.run_until_complete(bot.start(token))
     except KeyboardInterrupt:
         pass
     finally:
