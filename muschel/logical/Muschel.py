@@ -17,14 +17,15 @@ class MagischeMuschel():
         vielleicht_liste = self.reader.getFileAttribute('vielleicht_list')
         words_liste = self.reader.getFileAttribute('words_list')
         res_word = random.choice(words_liste)
-        if (not wann_frage):
-            words_liste.remove('Vielleicht')
+        if not wann_frage:
+            if 'Vielleicht' in words_liste:
+                words_liste.remove('Vielleicht')  # 'Vielleicht Ja Ehre' doesnt make sense...
         if res_word.lower() == ("vielleicht" or "vielleicht "):
             res_word += f" {random.choice(vielleicht_liste)}"
-        elif res_word.lower() == "von 10 ofenkäse":
-            res_word = {random.randint(0, 10)} + res_word
         elif res_word.lower() == "in":
             res_word += f" {random.randint(1, 365)} Tage(n)"
+        # elif res_word.lower() == "von 10 ofenkäse":
+        #     res_word = f"{random.randint(0, 10)} {res_word}"
         return res_word
 
     def createRandom(self, lb, ub):
@@ -47,4 +48,3 @@ class MagischeMuschel():
             year, month = now.year + 1, 2
         then = datetime(year, month, 1, 0, 0, 0)
         return (then - now).total_seconds()
-        
