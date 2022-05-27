@@ -6,7 +6,7 @@ from . import Errors
 log = getLogger(__name__)
 
 
-class MediaReader():
+class MediaReader:
 
     def __init__(self, filepath):
         dirname = os.path.dirname(__file__)
