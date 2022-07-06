@@ -42,7 +42,7 @@ class Common(commands.Cog):
     @commands.command(name="uptime", brief="Gibt die Betriebszeit des Bots an")
     async def getUptime(self, ctx):
         try:
-            await ctx.send(self.muschel.calcTimeDelta(datetime.now()))
+            await ctx.send(self.muschel.calcUptimeDelta(datetime.now()))
         except Errors.InvalidArgumentsError:
             await ctx.send("Mindestens Ein Parameter muss gegeben sein")
         except (Exception, BaseException) as e:

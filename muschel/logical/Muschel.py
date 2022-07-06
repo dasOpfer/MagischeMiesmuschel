@@ -33,8 +33,13 @@ class MagischeMuschel():
             raise Errors.InvalidArgumentsError("[uB] < [lB] ist ungültig")
         return random.randint(lb, ub)
 
-    def calcTimeDelta(self, o_datetime):
-        return o_datetime - self.initTime
+    def calcTimeDelta(self, start_datetime, end_datetime):
+        if start_datetime > end_datetime:
+            start_datetime, end_datetime = end_datetime, start_datetime  # swap
+        return end_datetime - start_datetime
+
+    def calcUptimeDelta(self, o_datetime):
+        return self.calcTimeDelta(self.initTime, o_datetime)
 
     def decideCell(self, args):
         if len(args) < 1:
@@ -44,7 +49,7 @@ class MagischeMuschel():
     def callExams(self):
         now = datetime.now()
         year, month = now.year, 7
-        if now.month > 7:
+        if now.month >= 7:
             year, month = now.year + 1, 2
         then = datetime(year, month, 1, 0, 0, 0)
-        return (then - now).total_seconds()
+        return self.calcTimeDelta(now, then).total_seconds()
