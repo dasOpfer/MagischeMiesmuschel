@@ -51,8 +51,8 @@ class Common(commands.Cog):
     @commands.command(name="exams", brief="Gibt die Zeit zwischen jetzt und der nachsten Prufungsphase an.")
     async def tellDeltaExams(self, ctx):
         try:
-            d_hours = (int) (self.muschel.callExams() // 3600)
-            d_days = (int) (self.muschel.callExams() // 86400)
+            d_hours = (int)(self.muschel.callExams() // 3600)
+            d_days = (int)(self.muschel.callExams() // 86400)
             msg = f"Bis zur nächsten Klausurphase sind es noch {d_days} Tage | {d_hours} Stunden"
             await ctx.reply(msg)
         except (Exception, BaseException) as e:

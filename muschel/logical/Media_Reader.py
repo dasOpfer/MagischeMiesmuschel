@@ -46,7 +46,7 @@ class JSONReader(MediaReader):
             raise Exception(f"{attr} Attribut in Datei nicht gefunden")
 
 
-#class IMGReader(MediaReader):
+#  class IMGReader(MediaReader):
 #   def __init__(self, filepath):
 #        super(IMGReader, self).__init__(filepath)
 #
