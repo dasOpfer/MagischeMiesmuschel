@@ -7,7 +7,7 @@ import asyncio
 import os
 
 reader = JSONReader(os.path.join("..", "media", "json", "credentials.json"))
-intents = discord.Intents.default()  # intent argument required for discord-py >2.0
+intents = discord.Intents.all()  # intent argument required for discord-py >2.0
 bot = commands.Bot(command_prefix=reader.getFileAttribute('prefix'), intents=intents)
 
 
@@ -26,7 +26,7 @@ async def run_bot():
     except KeyboardInterrupt:
         pass
     finally:
-        await bot.close(token)
+        await bot.close()
     return
 
 
