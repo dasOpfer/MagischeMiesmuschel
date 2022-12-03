@@ -38,8 +38,7 @@ async def main():
 
 if __name__ == '__main__':
     try:
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(main())
+        asyncio.run(main())
     except (BaseException, Exception) as e:
         log.error(f"{type(e).__name__}: {e}", exc_info=True)
     __bot_logger__._stop_logging()
