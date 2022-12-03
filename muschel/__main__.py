@@ -21,17 +21,14 @@ async def run_bot():
     await bot.add_cog(Commands.Common())
     if not token:
         raise ValueError("Discord bot token empty")
-    try:
-        await bot.start(token)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        await bot.close()
+    await bot.start(token)
     return
 
 
 async def main():
     await run_bot()
+    if not bot.is_closed:
+        await bot.close()
     log.info("Bot ist offline")
     return
 
@@ -39,6 +36,8 @@ async def main():
 if __name__ == '__main__':
     try:
         asyncio.run(main())
+    except KeyboardInterrupt:
+        log.warning(f"Caught KeyboardInterrupt. Bot forcefully stopped!")
     except (BaseException, Exception) as e:
         log.error(f"{type(e).__name__}: {e}", exc_info=True)
     __bot_logger__._stop_logging()
