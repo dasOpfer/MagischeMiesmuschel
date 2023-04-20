@@ -1,6 +1,9 @@
 from datetime import datetime
 from discord.ext import commands
 from . import Muschel, Errors
+from logging import getLogger
+
+log = getLogger(__name__)
 
 
 class Common(commands.Cog):
@@ -82,3 +85,54 @@ class Common(commands.Cog):
     async def invalidArgs_getRandom_raise(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Ungültige/Fehlende Argumente. 2 sind gegeben.")
+
+
+class ChatGPT(commands.Cog):
+
+    def __init__(self, openai_api_key):
+        self.muschel = Muschel.MagischeMuschel()
+        self.gptSystem = ("Be yourself >:)")
+        self.gptConversation = [{"role": "system", "content": self.gptSystem}]
+        self.openAIKey = openai_api_key
+
+    @commands.command(name="gpt", brief="Generiert Prompt von ChatGPT")
+    async def callChatGPT(self, ctx):
+        try:
+            clean_msg = ctx.message.content.replace("!gpt", "")
+            if clean_msg != "" and clean_msg is not None:
+                self.gptConversation.append({"role": "user", "content": clean_msg})
+                log.info(self.gptConversation)
+                gptResponse = self.muschel.callGPTPrompt(self.gptConversation, self.openAIKey)
+                self.gptConversation.append({"role": "assistant", "content": gptResponse})
+                await ctx.reply(gptResponse)
+            else:
+                await ctx.reply("Bad Request")
+        except (Exception, BaseException) as e:
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+
+    @commands.command(name="active_system", brief="Gibt die aktuellen Systemrestriktionen zurück.")
+    async def getGPTSystem(self, ctx):
+        try:
+            await ctx.reply(f"currently active:\n\n{self.gptSystem}")
+        except (Exception, BaseException) as e:
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+
+    @commands.command(name="gpt_system", brief="Erteilt dem ChatGPT-Bot Restriktionen, wie er sich verhalten soll")
+    async def setGPTSystem(self, ctx):
+        try:
+            clean_msg = ctx.message.content.replace("!gpt_system", "")
+            if (clean_msg != "" and clean_msg is not None):
+                await ctx.reply(clean_msg)
+            else:
+                await ctx.reply("Bad Request")
+        except (Exception, BaseException) as e:
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+
+    @commands.command(name="flush_gpt", brief="Loscht vorangegangene Konversationen und System-Restriktionen mit ChatGPT")
+    async def flushChatGPT(self, ctx):
+        try:
+            self.gptSystem = ""
+            self.gptConversation.clear()
+            await ctx.reply("Flush erfolgreich")
+        except (Exception, BaseException) as e:
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")

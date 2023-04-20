@@ -19,6 +19,7 @@ async def on_ready():
 async def run_bot():
     token = cfgs.getConfig("TOKEN")
     await bot.add_cog(Commands.Common())
+    await bot.add_cog(Commands.ChatGPT(cfgs.getConfig("OPENAI_TOKEN")))
     if not token:
         raise ValueError("Discord bot token empty")
     await bot.start(token)

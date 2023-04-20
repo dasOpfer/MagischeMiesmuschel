@@ -1,5 +1,6 @@
 import random
 import os
+import openai
 from datetime import datetime
 
 from .Media_Reader import JSONReader
@@ -53,3 +54,25 @@ class MagischeMuschel():
             year, month = now.year + 1, 2
         then = datetime(year, month, 1, 0, 0, 0)
         return self.calcTimeDelta(now, then).total_seconds()
+
+    def callGPTPrompt(self, msgs: list, apiKey: str):
+        """
+        :param gptSystemPrompt: System Restriction Prompt. e.g ChatGPT DAN.
+        :param msgs: ongoing conversation with ChatGPT
+        :return: returns chatGPTs response to the ongoing Convo with the systemPrompt Restrictions.
+        """
+        openai.api_key = apiKey
+        gptResponse = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=msgs
+        )
+        return gptResponse['choices'][0]['message']['content']
+
+    def generateGPTImage(self, prmpt, apiKey: str):
+        openai.api_key = apiKey
+        gptResponse = openai.Image.create(
+            prompt=prmpt,
+            n=4,
+            size="1024x1024"
+        )
+        return gptResponse
