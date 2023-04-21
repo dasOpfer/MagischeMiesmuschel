@@ -3,8 +3,11 @@ import os
 import openai
 from datetime import datetime
 
+from logging import getLogger
 from .Media_Reader import JSONReader
 from . import Errors
+
+log = getLogger(__name__)
 
 
 class MagischeMuschel():
@@ -13,6 +16,10 @@ class MagischeMuschel():
         self.initTime = datetime.now()
         self.reader = JSONReader(
             os.path.join("..", "media", "json", "credentials.json"))
+        self.gptreader = JSONReader(
+            os.path.join("..", "media", "json", "gptRoles.json"))
+        self.gptMessages = [self.getGPTDefault()]
+        self.latestMessage = self.initTime
 
     def generateQuote(self, wann_frage):
         vielleicht_liste = self.reader.getFileAttribute('vielleicht_list')
@@ -55,18 +62,39 @@ class MagischeMuschel():
         then = datetime(year, month, 1, 0, 0, 0)
         return self.calcTimeDelta(now, then).total_seconds()
 
-    def callGPTPrompt(self, msgs: list, apiKey: str):
+    def flushGPTConversation(self):
+        self.gptMessages = [self.getGPTDefault()]
+
+    def callGPTPrompt(self, msg: str, msg_author: str, apiKey: str, rpEnabled, timeout=600):
         """
-        :param gptSystemPrompt: System Restriction Prompt. e.g ChatGPT DAN.
-        :param msgs: ongoing conversation with ChatGPT
+        :param system: System Restriction Prompt. e.g ChatGPT DAN.
+        :param msg: message (prompt) to chatGPT. will be added by self.gptConversation for context.
+        :param apiKey: OpenAI-API Key.
+        :param timeout: Timeout of latest Message from user. default 10 minutes
         :return: returns chatGPTs response to the ongoing Convo with the systemPrompt Restrictions.
         """
-        openai.api_key = apiKey
-        gptResponse = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=msgs
-        )
-        return gptResponse['choices'][0]['message']['content']
+        try:
+            openai.api_key = apiKey
+            systemText = self.getGPTDefault()
+            if (datetime.now() - self.latestMessage).total_seconds() >= timeout:
+                self.flushGPTConversation()
+            self.latestMessage = datetime.now()
+            log.info(self.gptMessages)
+            if not rpEnabled:
+                systemText = "Be polite"
+            else:
+                msg = f"My name is {msg_author} - {msg}"
+            self.gptMessages[0] = {"role": "system", "content": systemText}
+            self.gptMessages.append({"role": "user", "content": msg})
+            gptResponse = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=self.gptMessages
+            )
+            responseContent = gptResponse['choices'][0]['message']['content']
+            self.gptMessages.append({"role": "assistant", "content": responseContent})  # adds answer from gpt for context
+            return responseContent
+        except (Exception, BaseException) as e:
+            log.warning(e)
 
     def generateGPTImage(self, prmpt, apiKey: str):
         openai.api_key = apiKey
@@ -76,3 +104,9 @@ class MagischeMuschel():
             size="1024x1024"
         )
         return gptResponse
+
+    def getGPTDefault(self):
+        try:
+            return self.gptreader.getFileAttribute('gpt_system_default')
+        except ValueError as e:
+            log.warning(e)

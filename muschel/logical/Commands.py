@@ -91,48 +91,35 @@ class ChatGPT(commands.Cog):
 
     def __init__(self, openai_api_key):
         self.muschel = Muschel.MagischeMuschel()
-        self.gptSystem = ("Be yourself >:)")
-        self.gptConversation = [{"role": "system", "content": self.gptSystem}]
         self.openAIKey = openai_api_key
+        self.rpEnabled = True
 
     @commands.command(name="gpt", brief="Generiert Prompt von ChatGPT")
     async def callChatGPT(self, ctx):
         try:
             clean_msg = ctx.message.content.replace("!gpt", "")
             if clean_msg != "" and clean_msg is not None:
-                self.gptConversation.append({"role": "user", "content": clean_msg})
-                log.info(self.gptConversation)
-                gptResponse = self.muschel.callGPTPrompt(self.gptConversation, self.openAIKey)
-                self.gptConversation.append({"role": "assistant", "content": gptResponse})
-                await ctx.reply(gptResponse)
+                await ctx.reply(self.muschel.callGPTPrompt(clean_msg, ctx.message.author.name, self.openAIKey, rpEnabled=self.rpEnabled))
             else:
-                await ctx.reply("Bad Request")
+                await ctx.reply(self.muschel.callGPTPrompt("tell me how dumb i am", ctx.message.author.name, self.openAIKey, rpEnabled=self.rpEnabled))
         except (Exception, BaseException) as e:
-            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+            log.warning(e)
 
-    @commands.command(name="active_system", brief="Gibt die aktuellen Systemrestriktionen zurück.")
-    async def getGPTSystem(self, ctx):
+    @commands.command(name="toggle", brief="De/Aktiviert das Roleplay von ChatGPT und flusht Konversation")
+    async def toggleRoleplay(self, ctx):
         try:
-            await ctx.reply(f"currently active:\n\n{self.gptSystem}")
+            self.rpEnabled = not self.rpEnabled
+            self.muschel.flushGPTConversation()
+            log.info("Roleplay: Enabled -> Disabled" if not self.rpEnabled else "Roleplay: Disabled -> Enabled")
+            await ctx.reply("Roleplay: :clown: :point_right: :neutral_face:" if not self.rpEnabled else "Roleplay: :clown: :point_left: :neutral_face:")
         except (Exception, BaseException) as e:
-            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+            log.warning(e)
 
-    @commands.command(name="gpt_system", brief="Erteilt dem ChatGPT-Bot Restriktionen, wie er sich verhalten soll")
-    async def setGPTSystem(self, ctx):
-        try:
-            clean_msg = ctx.message.content.replace("!gpt_system", "")
-            if (clean_msg != "" and clean_msg is not None):
-                await ctx.reply(clean_msg)
-            else:
-                await ctx.reply("Bad Request")
-        except (Exception, BaseException) as e:
-            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
 
-    @commands.command(name="flush_gpt", brief="Loscht vorangegangene Konversationen und System-Restriktionen mit ChatGPT")
+    @commands.command(name="flush", brief="Loscht vorangegangene Konversationen und System-Restriktionen mit ChatGPT")
     async def flushChatGPT(self, ctx):
         try:
-            self.gptSystem = ""
-            self.gptConversation.clear()
+            self.muschel.flushGPTConversation()
             await ctx.reply("Flush erfolgreich")
         except (Exception, BaseException) as e:
-            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")
+            log.warning(e)
