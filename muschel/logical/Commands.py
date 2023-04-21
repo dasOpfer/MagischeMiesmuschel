@@ -123,3 +123,17 @@ class ChatGPT(commands.Cog):
             await ctx.reply("Flush erfolgreich")
         except (Exception, BaseException) as e:
             log.warning(e)
+
+    @commands.command(name="imagine", brief="Erstellt Bild mit DALL-E Mini")
+    async def callGenerateImage(self, ctx):
+        try:
+            clean_msg = ctx.message.content.replace("!imagine", "")
+            if clean_msg != "" and clean_msg is not None:
+                gptAnswer = self.muschel.generateGPTImage(clean_msg, 2, self.openAIKey)
+                for img_url in gptAnswer:
+                    await ctx.send(img_url['url'])
+            else:
+                await ctx.reply(self.muschel.generateGPTImage('Clown Emoji pointing at Viewer', 1, self.openAIKey)[0]['url'])
+        except (Exception, BaseException) as e:
+            log.warning(e)
+            await ctx.send(f"oopsie woopsie sowwy TwT\n{e}")

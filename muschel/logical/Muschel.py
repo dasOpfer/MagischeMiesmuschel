@@ -96,14 +96,22 @@ class MagischeMuschel():
         except (Exception, BaseException) as e:
             log.warning(e)
 
-    def generateGPTImage(self, prmpt, apiKey: str):
-        openai.api_key = apiKey
-        gptResponse = openai.Image.create(
-            prompt=prmpt,
-            n=4,
-            size="1024x1024"
-        )
-        return gptResponse
+    def generateGPTImage(self, prmpt, amountImages, apiKey: str):
+        try:
+            if amountImages > 4:
+                amountImages = 4
+            elif amountImages < 1:
+                amountImages = 1
+            openai.api_key = apiKey
+            gptResponse = openai.Image.create(
+                prompt=f'"{prmpt}"',
+                n=amountImages,
+                size="1024x1024"
+            )
+            return gptResponse['data']
+        except (Exception, BaseException) as e:
+            log.warning(e)
+            return e
 
     def getGPTDefault(self):
         try:
