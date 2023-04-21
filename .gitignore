@@ -1,5 +1,7 @@
 # Ignore cfgs
 muschel/config.env
+# Ignore gptRoles
+muschel/media/json/gptRoles.json
 
 # Python cache
 muschel/__pycache__/*
