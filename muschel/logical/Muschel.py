@@ -79,7 +79,7 @@ class MagischeMuschel():
             if (datetime.now() - self.latestMessage).total_seconds() >= timeout:
                 self.flushGPTConversation()
             self.latestMessage = datetime.now()
-            log.info(self.gptMessages)
+            # log.info(self.gptMessages)
             if not rpEnabled:
                 systemText = "Be polite"
             else:
